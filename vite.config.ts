@@ -1,18 +1,43 @@
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 
-import { defineConfig } from 'vite'
+import {defineConfig, loadEnv} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    },
-  },
+export default defineConfig(({command, mode}) => {
+
+    // 1.获取环境变量
+    const env = loadEnv(mode, process.cwd())
+
+    return {
+        plugins: [
+            vue(),
+            vueDevTools(),
+        ],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url))
+            },
+        },
+        css: {
+            preprocessorOptions: {
+                // 配置全局共享变量less
+                less: {
+                    additionalData: '@import "@/style/variables.less";',
+                },
+            }
+        },
+        server: {
+            proxy: {
+                // 1.用户代理服务
+                [env.VITE_APP_BASE_USER_API]: {
+                    target: env.VITE_SERVER, // 目标地址
+                    changeOrigin: true, // 改变跨域
+                    rewrite: (path) => path.replace(`/^\/${env.VITE_APP_BASE_USER_API}/`, ''), // 重写路径
+                }
+            }
+        }
+    }
+
 })
