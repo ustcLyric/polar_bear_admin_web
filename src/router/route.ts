@@ -2,8 +2,8 @@ export const constantRoute = [
     // 1.首页
     {
         path: '/',
-        component: import('@/views/home/index.vue'),
-        name: 'home',
+        component: import('@/layout/index.vue'),
+        name: 'index',
         meta: {
             hidden: false,
             title: '首页',

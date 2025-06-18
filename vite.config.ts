@@ -31,10 +31,10 @@ export default defineConfig(({command, mode}) => {
         server: {
             proxy: {
                 // 1.用户代理服务
-                [env.VITE_APP_BASE_USER_API]: {
-                    target: env.VITE_SERVER, // 目标地址
+                '/api': {
+                    target: "http://127.0.0.1:18001", // 目标地址
                     changeOrigin: true, // 改变跨域
-                    rewrite: (path) => path.replace(`/^\/${env.VITE_APP_BASE_USER_API}/`, ''), // 重写路径
+                    rewrite: (path) => path.replace(/^\/api/, '/trpc.polarBear.user.PolarBearUserService'), // 重写路径
                 }
             }
         }

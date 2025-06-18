@@ -1,1 +1,19 @@
 @button-color-primary: rgb(22, 93, 255);
+
+// 布局
+
+// 主容器
+@layout-container-height: 100vh;
+@layout-container-width: 100%;
+
+// 头部
+@layout-header-height: 50px;
+@layout-header-width: 100%;
+
+// 菜单
+@layout-menu-width: 200px;
+@layout-menu-height: calc(@layout-container-height - @layout-header-height);
+
+// 内容区
+@layout-content-height: calc(@layout-container-height - @layout-header-height);
+@layout-content-width: calc(@layout-container-width - @layout-menu-width);
