@@ -11,9 +11,13 @@
 @layout-header-width: 100%;
 
 // 菜单
-@layout-menu-width: 200px;
+@layout-menu-width: 250px;
 @layout-menu-height: calc(@layout-container-height - @layout-header-height);
 
+// tag区
+@layout-tag-height: 24px;
+@layout-tag-width: calc(@layout-container-width - @layout-menu-width);
+
 // 内容区
-@layout-content-height: calc(@layout-container-height - @layout-header-height);
+@layout-content-height: calc(@layout-container-height - @layout-header-height - @layout-tag-height);
 @layout-content-width: calc(@layout-container-width - @layout-menu-width);

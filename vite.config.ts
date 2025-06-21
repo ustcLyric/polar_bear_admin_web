@@ -4,6 +4,8 @@ import {defineConfig, loadEnv} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+import {createSvgIconsPlugin} from "vite-plugin-svg-icons";
+import path from "node:path";
 // https://vite.dev/config/
 export default defineConfig(({command, mode}) => {
 
@@ -14,6 +16,10 @@ export default defineConfig(({command, mode}) => {
         plugins: [
             vue(),
             vueDevTools(),
+            createSvgIconsPlugin({
+                iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+                symbolId: 'icon-[dir]-[name]',
+            }),
         ],
         resolve: {
             alias: {

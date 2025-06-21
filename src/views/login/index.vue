@@ -2,7 +2,7 @@
   <div class="container">
     <div class="login-form">
       <div class="login-form-left">
-        <img src="@/assert/img/login_one.png" style="width: 400px;height: 500px"/>
+        <img src="@/assets/img/login_one.png" style="width: 400px;height: 500px"/>
       </div>
       <div class="login-form-right">
         <div class="login-form-right-form" style="padding-top: 90px;margin: 0 auto;width: 320px;">
@@ -60,12 +60,17 @@ import {reactive, ref} from "vue";
 import {ElMessage, type FormInstance, type FormRules} from "element-plus";
 import {userLoginApi} from "@/api/user";
 import type {UserLoginRequest} from "@/api/user/type.ts";
+import {useUserStore} from "@/store/user";
+import router from "@/router";
+import {useRoute} from "vue-router";
 
 interface LoginForm {
   account_name: string,
   password: string,
 }
 
+const userStore = useUserStore()
+const route = useRoute()
 const dataConfig = reactive({
   form: {
     account_name: '',
@@ -114,11 +119,26 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 
 const userLogin = async () => {
-  reqConfig.userLoginReq.account_name = 'ustcyang'
-  reqConfig.userLoginReq.password = '5203344yh'
-  const userLoginRsp = await userLoginApi(reqConfig.userLoginReq);
-  console.log('userLoginRsp:', userLoginRsp)
-  ElMessage.success('登陆成功')
+  try {
+    reqConfig.userLoginReq.account_name = 'ustcyang'
+    reqConfig.userLoginReq.password = '5203344yh'
+    if (loginFormRef.value) {
+      await loginFormRef.value.validate()
+    }
+    // const userLoginRsp = await userLoginApi(reqConfig.userLoginReq);
+    // console.log('userLoginRsp:', userLoginRsp)
+    ElMessage.success('登陆成功')
+    userStore.userLogin(reqConfig.userLoginReq)
+    console.log(route)
+    if (route.query?.redirect) {
+      console.log('跳转')
+      router.push(route.query?.redirect as string)
+    } else {
+      router.push('/')
+    }
+  } catch (err) {
+    ElMessage.error('登陆失败')
+  }
 
 }
 

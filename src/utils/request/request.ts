@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {useUserStore} from "@/store/user";
 
 // 1.创建请求
 const request = axios.create({
@@ -14,6 +15,9 @@ const request = axios.create({
 // 2.请求拦截器
 request.interceptors.request.use(config => {
     // TODO 建议去识别用户身份然后登录
+    let userStore = useUserStore()
+    // config配置对象，heads属性请求头，经常给服务器端携带公共参数
+    config.headers.set('token', userStore.token)
     return config;
 })
 
